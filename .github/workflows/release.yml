@@ -100,6 +100,7 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           name: built-source
+          path: ./dist
       - name: Download Apptainer image artifact
         uses: actions/download-artifact@v5
         with:
@@ -135,7 +136,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          ls
           tag="${{ steps.tag.outputs.tag }}"
           gh release upload "$tag" ./dist/*
       - name: Upload Apptainer Image to Release
