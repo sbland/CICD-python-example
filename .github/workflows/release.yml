@@ -3,7 +3,11 @@
 name: Build Apptainer Image
 
 on:
+
   push:
+    tags:
+      - 'v*'
+
     branches:
       - main
       - ci
@@ -101,30 +105,30 @@ jobs:
         with:
           name: apptainer.sif
 
-      - name: Create a Release
-        uses: elgohr/Github-Release-Action@v5
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          title: MyReleaseMessage
-          tag: ${{ github.ref_name }}
-      # - name: Set tag name
-      #   id: tag
-      #   run: |
-      #     if [[ "${{ github.event_name }}" != "push" ]]; then
-      #       tag=v$(date +%Y%m%d.%H%M%S)
-      #     else
-      #       tag=$(basename "${{ github.ref }}")
-      #     fi
-      #     echo "tag=$tag" >> $GITHUB_OUTPUT
-      # - name: Create Release
+      - name: Set tag name
+        id: tag
+        run: |
+          if [[ "${{ github.event_name }}" != "push" ]]; then
+            tag=v$(date +%Y%m%d.%H%M%S)
+          else
+            tag=$(basename "${{ github.ref }}")
+          fi
+          echo "tag=$tag" >> $GITHUB_OUTPUT
+      # - name: Create a Release
+      #   uses: elgohr/Github-Release-Action@v5
       #   env:
-      #     GH_TOKEN: ${{ github.token }}
-      #     GH_REPO: ${{ github.repository }}
-      #   run: |
-      #     tag="${{ steps.tag.outputs.tag }}"
-      #     body="release example for apptainer image and source distribution"
-      #     gh release create --draft "$tag" --title "$tag" --notes "$body"
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     title: MyReleaseMessage
+      #     tag: ${{ github.ref_name }}
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          tag="${{ steps.tag.outputs.tag }}"
+          body="release example for apptainer image and source distribution"
+          gh release create --draft "$tag" --title "$tag" --notes "$body"
 
 
   publish:
@@ -137,9 +141,3 @@ jobs:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
       run: gh release edit "${{ needs.create_release.outputs.tag }}" --draft=false
-    - uses: eregon/keep-last-n-releases@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        n: 3
-        remove_tags_without_release: true
