@@ -3,17 +3,9 @@
 name: Build Apptainer Image
 
 on:
-
   push:
     tags:
       - 'v*'
-
-    branches:
-      - main
-      - ci
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
