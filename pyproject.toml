@@ -1,0 +1,39 @@
+[project]
+name = "cdcd-python-example"
+version = "0.0.1"
+description = "Example CI/CD pipelines for python projects"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "numpy>=1.18.3",
+]
+
+[dependency-groups]
+dev = [
+  "pytest-cov>=5.0.0",
+  "pytest-mock>=3.14.0",
+  "pytest-snapshot>=0.9.0",
+  "ruff>=0.7.0",
+  "pre-commit>=2.7.1",
+  "bump2version>=1.0.1",
+  "pytest>=8.3.4",
+]
+
+build=[]
+
+test = [
+  "pytest-cov>=5.0.0",
+  "pytest-mock>=3.14.0",
+  "pytest-snapshot>=0.9.0",
+  "pytest>=8.3.4",
+]
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+  "src",
+]
