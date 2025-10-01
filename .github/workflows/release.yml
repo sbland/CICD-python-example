@@ -135,9 +135,10 @@ jobs:
     name: Publish Release
     needs: create_release
     runs-on: ubuntu-latest
+    permissions: write-all
     steps:
     - name: Publish Release
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
-      run: gh release edit "${{ needs.create_release.outputs.tag }}" --draft=false
+      run: gh release edit ${{ needs.create_release.outputs.tag }} --draft=false
