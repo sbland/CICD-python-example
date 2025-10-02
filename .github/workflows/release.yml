@@ -107,13 +107,6 @@ jobs:
             tag=$(basename "${{ github.ref }}")
           fi
           echo "tag=$tag" >> $GITHUB_OUTPUT
-      # - name: Create a Release
-      #   uses: elgohr/Github-Release-Action@v5
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     title: MyReleaseMessage
-      #     tag: ${{ github.ref_name }}
       - name: Create Release
         env:
           GH_TOKEN: ${{ github.token }}
